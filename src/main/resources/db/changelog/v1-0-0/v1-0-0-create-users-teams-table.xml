@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+    <property dbms="postgresql"/>
+    <changeSet id="1.0.0.4" author="paper">
+        <tagDatabase tag="create-users-teams-table"/>
+    </changeSet>
+    <changeSet id="1.0.0.5" author="paper">
+        <createTable tableName="users_teams">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="users_id" type="int">
+                <constraints foreignKeyName="fk_users_id" references="users(id)" nullable="false"/>
+            </column>
+            <column name="teams_id" type="int">
+                <constraints foreignKeyName="fk_teams_id" references="teams(id)" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="users_teams"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
