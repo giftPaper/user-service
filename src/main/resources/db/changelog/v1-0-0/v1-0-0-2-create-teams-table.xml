@@ -8,29 +8,23 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
-    <changeSet id="1.0.0.6" author="paper">
-        <tagDatabase tag="create-users-contacts-table"/>
+    <changeSet id="1.0.0.2.1" author="paper">
+        <tagDatabase tag="create-teams-table"/>
     </changeSet>
-    <changeSet id="1.0.0.7" author="paper">
-        <createTable tableName="contacts">
+    <changeSet id="1.0.0.2.2" author="paper">
+        <createTable tableName="teams">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="int">
-                <constraints foreignKeyName="fk_users_id" references="users(id)" nullable="false"/>
+            <column name="team_name" type="text">
+                <constraints nullable="false" unique="true"/>
             </column>
-            <column name="type" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column name="contact" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column name="is_active" type="boolean" defaultValueBoolean="true"/>
+            <column name="description" type="text"/>
             <column name="create_dt" type="TIMESTAMP(6)" defaultValueDate="CURRENT_TIMESTAMP"/>
             <column name="update_dt" type="TIMESTAMP(6)"/>
         </createTable>
         <rollback>
-            <dropTable tableName="contacts"/>
+            <dropTable tableName="teams"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

@@ -9,11 +9,11 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
     <property dbms="postgresql"/>
-    <changeSet id="1.0.0.8" author="paper">
+    <changeSet id="1.0.0.3.1" author="paper">
         <tagDatabase tag="create-users-address-table"/>
     </changeSet>
-    <changeSet id="1.0.0.9" author="paper">
-        <createTable tableName="users-address">
+    <changeSet id="1.0.0.3.2" author="paper">
+        <createTable tableName="users_address">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -27,7 +27,7 @@
             <column name="update_dt" type="TIMESTAMP(6)"/>
         </createTable>
         <rollback>
-            <dropTable tableName="users-address"/>
+            <dropTable tableName="users_address"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

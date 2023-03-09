@@ -8,26 +8,29 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
-    <property dbms="postgresql"/>
-    <changeSet id="1.0.0.0" author="paper">
-        <tagDatabase tag="create-users-table"/>
+    <changeSet id="1.0.0.4.1" author="paper">
+        <tagDatabase tag="create-users-contacts-table"/>
     </changeSet>
-    <changeSet id="1.0.0.1" author="paper">
-        <createTable tableName="users">
+    <changeSet id="1.0.0.4.2" author="paper">
+        <createTable tableName="contacts">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="firstname" type="text">
+            <column name="user_id" type="int">
+                <constraints foreignKeyName="fk_users_id" references="users(id)" nullable="false"/>
+            </column>
+            <column name="type" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="lastname" type="text"/>
-            <column name="middlename" type="text"/>
-            <column name="birth_dt" type="TIMESTAMP(6)"/>
+            <column name="contact" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="boolean" defaultValueBoolean="true"/>
             <column name="create_dt" type="TIMESTAMP(6)" defaultValueDate="CURRENT_TIMESTAMP"/>
             <column name="update_dt" type="TIMESTAMP(6)"/>
         </createTable>
         <rollback>
-            <dropTable tableName="users"/>
+            <dropTable tableName="contacts"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

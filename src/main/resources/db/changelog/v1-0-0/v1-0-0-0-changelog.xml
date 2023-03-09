@@ -8,5 +8,12 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
-    <include file="db/changelog/v1-0-0/v1-0-0-0-changelog.xml"/>
+    <changeSet id="v1-0-0" author="paper">
+        <tagDatabase tag="v1-0-0"/>
+    </changeSet>
+    <include file="db/changelog/v1-0-0/v1-0-0-1-create-users-table.xml"/>
+    <include file="db/changelog/v1-0-0/v1-0-0-2-create-teams-table.xml"/>
+    <include file="db/changelog/v1-0-0/v1-0-0-3-create-users-address-table.xml"/>
+    <include file="db/changelog/v1-0-0/v1-0-0-4-create-users-contacts-table.xml"/>
+    <include file="db/changelog/v1-0-0/v1-0-0-5-create-users-teams-table.xml"/>
 </databaseChangeLog>
