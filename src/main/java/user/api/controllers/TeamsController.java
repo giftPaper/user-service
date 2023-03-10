@@ -2,6 +2,7 @@ package user.api.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import user.api.dto.PageDto;
 import user.api.dto.TeamDto;
 import user.domain.entity.TeamsEntity;
 import user.service.TeamsService;
@@ -16,8 +17,8 @@ public class TeamsController {
     private final TeamsService teamsService;
 
     @GetMapping
-    public List<TeamDto> getTeams(){
-        return teamsService.getTeams();
+    public PageDto getTeams(@RequestParam int page, @RequestParam int size){
+        return teamsService.getTeams(page, size);
     }
 
     @GetMapping("/{id}")

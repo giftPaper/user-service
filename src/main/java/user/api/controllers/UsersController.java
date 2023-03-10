@@ -3,6 +3,7 @@ package user.api.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import user.api.dto.PageDto;
 import user.api.dto.UserDto;
 import user.domain.entity.UsersEntity;
 import user.domain.repo.UsersRepo;
@@ -19,8 +20,8 @@ public class UsersController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> get() {
-        return userService.getUsers();
+    public PageDto get(@RequestParam int page, @RequestParam int size) {
+        return userService.getUsers(page, size);
     }
 
     @GetMapping({"/{id}"})

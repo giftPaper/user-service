@@ -1,8 +1,11 @@
 package user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import user.api.dto.PageDto;
 import user.api.dto.UserDto;
 import user.api.dto.mapper.UserDtoMapper;
 import user.domain.entity.UsersEntity;
@@ -27,9 +30,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<UserDto> getUsers() {
-        return usersRepo.findAll(Sort.by("id").descending())
-                .stream().map(userDtoMapper::map).collect(Collectors.toList());
+    public PageDto getUsers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<UsersEntity> usersEntity = usersRepo.findAll(pageRequest);
+        return PageDto.builder()
+                .totalPages(usersEntity.getTotalPages())
+                .totalElements(usersEntity.getTotalElements())
+                .content(usersEntity.getContent().stream()
+                        .map(userDtoMapper::map)
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     @Override

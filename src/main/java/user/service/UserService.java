@@ -1,6 +1,7 @@
 package user.service;
 
 
+import user.api.dto.PageDto;
 import user.api.dto.UserDto;
 import user.domain.entity.UsersEntity;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserDto> getUsers();
+    PageDto getUsers(int page, int size);
 
     UsersEntity getUserById(Long id);
 
