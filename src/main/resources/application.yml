@@ -4,20 +4,23 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     hikari:
-      schema: ${spring.jpa.properties.hibernate.default_schema}
+      schema: ${spring.liquibase.parameters.defaultSchemaName}
     url: jdbc:postgresql://localhost:5432/user_db
     username: postgres
     password: postgres
   jpa:
     properties:
       hibernate:
-        default-schema: ${spring.liquibase.default-schema}
+        default-schema: ${spring.liquibase.parameters.defaultSchemaName}
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
   liquibase:
-    default-schema: users
     change-log: db/changelog-master.xml
+    parameters:
+      defaultSchemaName: users
+      driver-class-name: ${spring.datasource.driver-class-name}
+      change-log: db/changelog-master.xml
 preliquibase:
   dbPlatformCode: postgresql
   sqlScriptReferences: classpath:db/schema-init.sql
