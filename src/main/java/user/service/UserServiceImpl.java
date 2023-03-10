@@ -1,14 +1,13 @@
 package user.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import user.api.dto.UserDto;
 import user.api.dto.mapper.UserDtoMapper;
 import user.domain.entity.UsersEntity;
 import user.domain.entity.mapper.UsersEntityMapper;
+import user.exceptions.RestApiException;
 import user.domain.repo.UsersRepo;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,22 +29,19 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<UserDto> getUsers() {
         return usersRepo.findAll(Sort.by("id").descending())
-                .stream()
-                .map(userDtoMapper::map)
-                .collect(Collectors.toList());
+                .stream().map(userDtoMapper::map).collect(Collectors.toList());
     }
 
     @Override
-    public UserDto getUserById(Long id) {
+    public UsersEntity getUserById(Long id) {
         return usersRepo.findById(id)
-                .map(userDtoMapper::map)
-                .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new RestApiException(String.format("Пользователь c ID: %s не найден",id)));
     }
 
     @Override
     public UserDto update(UserDto userDto) {
-       var userEntity = usersRepo.findById(userDto.getId()).orElseThrow(
-               () -> new EntityNotFoundException(String.format("Пользователь с ID %s не найден", userDto.getId())));
+       var userEntity = usersRepo.findById(userDto.getId())
+               .orElseThrow(() -> new RestApiException(String.format("Пользователь с ID: %s не найден", userDto.getId())));
        updateUser(userEntity, userDto);
        return userDtoMapper.map(usersRepo.save(userEntity));
     }
@@ -59,6 +55,7 @@ public class UserServiceImpl implements UserService{
         usersEntity.setFirstname(userDto.getFirstname());
         usersEntity.setLastname(userDto.getLastname());
         usersEntity.setMiddlename(userDto.getMiddlename());
+        usersEntity.setRole(userDto.getRole());
         usersEntity.setBirthDt(userDto.getBirthDt());
     }
 }

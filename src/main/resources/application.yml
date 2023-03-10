@@ -1,3 +1,5 @@
+server:
+  basePrefixUrl: /api/v1/users
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver

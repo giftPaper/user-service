@@ -1,26 +1,22 @@
 package user.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
+import user.enums.RolesEnum;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 @EntityListeners(AuditingEntityListener.class)
 public class UsersEntity implements Serializable {
 
@@ -34,7 +30,10 @@ public class UsersEntity implements Serializable {
 
     private String middlename;
 
-    private Instant birthDt;
+    @Enumerated(EnumType.STRING)
+    private RolesEnum role;
+
+    private LocalDate birthDt;
 
     @CreatedDate
     @Column(updatable = false)

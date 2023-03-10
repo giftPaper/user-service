@@ -14,6 +14,7 @@ public class UserDtoMapper {
                 .firstname(usersEntity.getFirstname())
                 .lastname(usersEntity.getLastname())
                 .middlename(usersEntity.getMiddlename())
+                .role(usersEntity.getRole())
                 .birthDt(usersEntity.getBirthDt())
                 .build();
     }

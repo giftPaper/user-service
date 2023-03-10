@@ -1,29 +1,28 @@
 package user.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Builder
+@EntityListeners(AuditingEntityListener.class)
 @Table(name="teams")
 public class TeamsEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String team_name;
+    @Column(unique = true)
+    private String teamName;
 
     private String description;
 

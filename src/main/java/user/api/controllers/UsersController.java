@@ -1,5 +1,6 @@
 package user.api.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import user.api.dto.UserDto;
@@ -11,17 +12,19 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequiredArgsConstructor
+@RequestMapping("${server.basePrefixUrl}")
 public class UsersController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @GetMapping
     public List<UserDto> get() {
         return userService.getUsers();
     }
+
     @GetMapping({"/{id}"})
-    public UserDto get(@PathVariable Long id ) {
+    public UsersEntity get(@PathVariable Long id ) {
         return userService.getUserById(id);
     }
 

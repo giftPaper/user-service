@@ -22,7 +22,8 @@
             </column>
             <column name="lastname" type="text"/>
             <column name="middlename" type="text"/>
-            <column name="birth_dt" type="TIMESTAMP"/>
+            <column name="birth_dt" type="DATE"/>
+            <column name="role" type="text"/>
             <column name="create_dt" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>

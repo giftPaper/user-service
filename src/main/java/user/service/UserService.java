@@ -10,7 +10,7 @@ public interface UserService {
 
     List<UserDto> getUsers();
 
-    UserDto getUserById(Long id);
+    UsersEntity getUserById(Long id);
 
     UserDto create(UserDto userDto);
 

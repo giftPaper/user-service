@@ -11,6 +11,7 @@ public class UsersEntityMapper {
                 .firstname(userDto.getFirstname())
                 .lastname(userDto.getLastname())
                 .middlename(userDto.getMiddlename())
+                .role(userDto.getRole())
                 .birthDt(userDto.getBirthDt())
                 .build();
     }
