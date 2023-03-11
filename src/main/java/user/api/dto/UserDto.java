@@ -1,13 +1,10 @@
 package user.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
 import user.enums.RolesEnum;
-
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Data

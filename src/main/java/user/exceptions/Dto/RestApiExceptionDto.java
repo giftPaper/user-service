@@ -3,7 +3,6 @@ package user.exceptions.Dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 
 @Data
 @AllArgsConstructor

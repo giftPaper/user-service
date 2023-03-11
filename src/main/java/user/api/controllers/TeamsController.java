@@ -7,8 +7,6 @@ import user.api.dto.TeamDto;
 import user.domain.entity.TeamsEntity;
 import user.service.TeamsService;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${server.basePrefixUrl}/teams")

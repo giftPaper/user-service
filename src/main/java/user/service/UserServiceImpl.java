@@ -7,12 +7,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import user.api.dto.PageDto;
 import user.api.dto.UserDto;
+import user.api.dto.UserFilterDto;
 import user.api.dto.mapper.UserDtoMapper;
 import user.domain.entity.UsersEntity;
 import user.domain.entity.mapper.UsersEntityMapper;
 import user.exceptions.RestApiException;
 import user.domain.repo.UsersRepo;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public PageDto getUsers(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("id").descending());
+    public PageDto getUsers(UserFilterDto userFilterDto) {
+        PageRequest pageRequest = PageRequest.of(userFilterDto.getPage(), userFilterDto.getSize(), Sort.by("id").descending());
         Page<UsersEntity> usersEntity = usersRepo.findAll(pageRequest);
         return PageDto.builder()
                 .totalPages(usersEntity.getTotalPages())
