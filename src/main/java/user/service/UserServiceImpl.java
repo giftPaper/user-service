@@ -1,9 +1,11 @@
 package user.service;
 
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import user.api.dto.PageDto;
 import user.api.dto.UserDto;
@@ -13,11 +15,14 @@ import user.domain.entity.UsersEntity;
 import user.domain.entity.mapper.UsersEntityMapper;
 import user.exceptions.RestApiException;
 import user.domain.repo.UsersRepo;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UsersRepo usersRepo;
     private final UserDtoMapper userDtoMapper;
@@ -32,7 +37,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public PageDto getUsers(UserFilterDto userFilterDto) {
         PageRequest pageRequest = PageRequest.of(userFilterDto.getPage(), userFilterDto.getSize(), Sort.by("id").descending());
-        Page<UsersEntity> usersEntity = usersRepo.findAll(pageRequest);
+        Page<UsersEntity> usersEntity = usersRepo.findAll(getSpecification(userFilterDto), pageRequest);
         return PageDto.builder()
                 .totalPages(usersEntity.getTotalPages())
                 .totalElements(usersEntity.getTotalElements())
@@ -45,15 +50,15 @@ public class UserServiceImpl implements UserService{
     @Override
     public UsersEntity getUserById(Long id) {
         return usersRepo.findById(id)
-                .orElseThrow(() -> new RestApiException(String.format("Пользователь c ID: %s не найден",id)));
+                .orElseThrow(() -> new RestApiException(String.format("Пользователь c ID: %s не найден", id)));
     }
 
     @Override
     public UserDto update(UserDto userDto) {
-       var userEntity = usersRepo.findById(userDto.getId())
-               .orElseThrow(() -> new RestApiException(String.format("Пользователь с ID: %s не найден", userDto.getId())));
-       updateUser(userEntity, userDto);
-       return userDtoMapper.map(usersRepo.save(userEntity));
+        var userEntity = usersRepo.findById(userDto.getId())
+                .orElseThrow(() -> new RestApiException(String.format("Пользователь с ID: %s не найден", userDto.getId())));
+        updateUser(userEntity, userDto);
+        return userDtoMapper.map(usersRepo.save(userEntity));
     }
 
     @Override
@@ -61,11 +66,27 @@ public class UserServiceImpl implements UserService{
         usersRepo.deleteById(id);
     }
 
-    private void updateUser(UsersEntity usersEntity, UserDto userDto){
+    @Override
+    public UserDto searchBy(UserFilterDto userFilterDto) {
+        return null;
+    }
+
+    private void updateUser(UsersEntity usersEntity, UserDto userDto) {
         usersEntity.setFirstname(userDto.getFirstname());
         usersEntity.setLastname(userDto.getLastname());
         usersEntity.setMiddlename(userDto.getMiddlename());
         usersEntity.setRole(userDto.getRole());
         usersEntity.setBirthDt(userDto.getBirthDt());
+    }
+
+    public Specification<UsersEntity> getSpecification(UserFilterDto userFilterDto) {
+
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> result = new ArrayList<>();
+            result.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("firstname")), userFilterDto.getSearchBy().toUpperCase()));
+            result.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("lastname")), userFilterDto.getSearchBy().toUpperCase()));
+            result.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("middlename")), userFilterDto.getSearchBy().toUpperCase()));
+            return criteriaBuilder.or(result.toArray(new Predicate[]{}));
+        };
     }
 }

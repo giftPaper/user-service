@@ -21,10 +21,4 @@ public class UserFilterDto {
     @Parameter
     private String searchBy;
 
-    @Parameter
-    private String searchByName;
-
-    @Parameter
-    private String searchByLastName;
-
 }
