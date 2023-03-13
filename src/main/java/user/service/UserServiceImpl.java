@@ -15,8 +15,7 @@ import user.domain.entity.UsersEntity;
 import user.domain.entity.mapper.UsersEntityMapper;
 import user.exceptions.RestApiException;
 import user.domain.repo.UsersRepo;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,11 +65,6 @@ public class UserServiceImpl implements UserService {
         usersRepo.deleteById(id);
     }
 
-    @Override
-    public UserDto searchBy(UserFilterDto userFilterDto) {
-        return null;
-    }
-
     private void updateUser(UsersEntity usersEntity, UserDto userDto) {
         usersEntity.setFirstname(userDto.getFirstname());
         usersEntity.setLastname(userDto.getLastname());
@@ -82,11 +76,16 @@ public class UserServiceImpl implements UserService {
     public Specification<UsersEntity> getSpecification(UserFilterDto userFilterDto) {
 
         return (root, query, criteriaBuilder) -> {
-            List<Predicate> result = new ArrayList<>();
-            result.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("firstname")), userFilterDto.getSearchBy().toUpperCase()));
-            result.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("lastname")), userFilterDto.getSearchBy().toUpperCase()));
-            result.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("middlename")), userFilterDto.getSearchBy().toUpperCase()));
-            return criteriaBuilder.or(result.toArray(new Predicate[]{}));
+            List<String> search = Arrays.stream(userFilterDto.getSearchBy().toLowerCase().split(" ")).toList();
+            Predicate[] predicates = new Predicate[search.size()];
+            for (int i = 0; i < search.size(); i++) {
+                predicates[i] = criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("firstname")), "%" + search.get(i) + "%"),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("lastname")),"%" + search.get(i) + "%"),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("middlename")), "%" + search.get(i) + "%")
+                        );
+            }
+            return criteriaBuilder.and(predicates);
         };
     }
 }

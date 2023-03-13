@@ -17,6 +17,4 @@ public interface UserService {
     UserDto update(UserDto userDto);
 
     void delete(Long id);
-
-    UserDto searchBy(UserFilterDto userFilterDto);
 }

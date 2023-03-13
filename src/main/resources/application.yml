@@ -5,7 +5,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     hikari:
       schema: ${spring.liquibase.parameters.defaultSchemaName}
-    url: jdbc:postgresql://localhost:5432/user_db
+    url: jdbc:postgresql://localhost:5432/user_db?useUnicode=true&characterEncoding=utf8
     username: postgres
     password: postgres
   jpa:
@@ -13,6 +13,12 @@ spring:
       hibernate:
         default-schema: ${spring.liquibase.parameters.defaultSchemaName}
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
+        connection:
+          CharSet: utf8
+          characterEncoding: utf8
+          useUnicode: utf8
     hibernate:
       ddl-auto: validate
   liquibase:
